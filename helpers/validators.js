@@ -11,7 +11,6 @@ const registerUserValidator = () => {
   ]
 };
 
-
 const loginUserValidator = () => {
   return [    
     body('email', 'Please include a valid email')
@@ -19,14 +18,21 @@ const loginUserValidator = () => {
     body('password', 'Password is required')
       .exists(),
   ]
-  };
+};
+
+const contactValidator = () => {
+  return [    
+    body('name', 'Name is requires')
+      .notEmpty(),
+  ]
+};  
 
 const validate = (req, res, next) => {
   const errors = validationResult(req)
   if (errors.isEmpty()) {
-    return next()
+    return next();
   }
-  const extractedErrors = []
+  const extractedErrors = [];
   errors.array().map(err => extractedErrors.push({ [err.param]: err.msg }))
 
   return res.status(400).json({
@@ -37,5 +43,6 @@ const validate = (req, res, next) => {
 module.exports = {
   registerUserValidator,
   loginUserValidator,
+  contactValidator,
   validate,
 }
